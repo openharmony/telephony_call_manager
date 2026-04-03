@@ -1282,7 +1282,7 @@ uintptr_t CloseUnfinishedUssdPromise(int32_t slotId)
     return reinterpret_cast<uintptr_t>(promise);
 }
 
-void onCallDetailsChange(
+void OnCallDetailsChange(
     ::taihe::callback_view<void(::ohos::telephony::call::CallAttributeOptions const& data)> callback)
 {
     TaiheCallManager::GetInstance().RegisterCallBack();
@@ -1538,24 +1538,24 @@ TH_EXPORT_CPP_API_SetCallTransferAsync(SetCallTransferAsync);
 TH_EXPORT_CPP_API_SetCallTransferPromise(SetCallTransferPromise);
 TH_EXPORT_CPP_API_CloseUnfinishedUssdAsync(CloseUnfinishedUssdAsync);
 TH_EXPORT_CPP_API_CloseUnfinishedUssdPromise(CloseUnfinishedUssdPromise);
-TH_EXPORT_CPP_API_onCallDetailsChange(OnCallDetailsChange);
-TH_EXPORT_CPP_API_offCallDetailsChange(OffCallDetailsChange);
-TH_EXPORT_CPP_API_onCallEventChange(OnCallEventChange);
-TH_EXPORT_CPP_API_offCallEventChange(OffCallEventChange);
-TH_EXPORT_CPP_API_onCallDisconnectedCauses(OnCallDisconnectedCauses);
-TH_EXPORT_CPP_API_offCallDisconnectedCauses(OffCallDisconnectedCauses);
-TH_EXPORT_CPP_API_onMmiCodeResult(OnMmiCodeResult);
-TH_EXPORT_CPP_API_offMmiCodeResult(OffMmiCodeResult);
-TH_EXPORT_CPP_API_onAudioDeviceChange(OnAudioDeviceChange);
-TH_EXPORT_CPP_API_offAudioDeviceChange(OffAudioDeviceChange);
-TH_EXPORT_CPP_API_onPostDialDelay(OnPostDialDelay);
-TH_EXPORT_CPP_API_offPostDialDelay(OffPostDialDelay);
-TH_EXPORT_CPP_API_onImsCallModeChange(OnImsCallModeChange);
-TH_EXPORT_CPP_API_offImsCallModeChange(OffImsCallModeChange);
-TH_EXPORT_CPP_API_onCallSessionEvent(OnCallSessionEvent);
-TH_EXPORT_CPP_API_offCallSessionEvent(OffCallSessionEvent);
-TH_EXPORT_CPP_API_onPeerDimensionsChange(OnPeerDimensionsChange);
-TH_EXPORT_CPP_API_offPeerDimensionsChange(OffPeerDimensionsChange);
-TH_EXPORT_CPP_API_onCameraCapabilitiesChange(OnCameraCapabilitiesChange);
-TH_EXPORT_CPP_API_offCameraCapabilitiesChange(OffCameraCapabilitiesChange);
+TH_EXPORT_CPP_API_OnCallDetailsChange(OnCallDetailsChange);
+TH_EXPORT_CPP_API_OffCallDetailsChange(OffCallDetailsChange);
+TH_EXPORT_CPP_API_OnCallEventChange(OnCallEventChange);
+TH_EXPORT_CPP_API_OffCallEventChange(OffCallEventChange);
+TH_EXPORT_CPP_API_OnCallDisconnectedCauses(OnCallDisconnectedCauses);
+TH_EXPORT_CPP_API_OffCallDisconnectedCauses(OffCallDisconnectedCauses);
+TH_EXPORT_CPP_API_OnMmiCodeResult(OnMmiCodeResult);
+TH_EXPORT_CPP_API_OffMmiCodeResult(OffMmiCodeResult);
+TH_EXPORT_CPP_API_OnAudioDeviceChange(OnAudioDeviceChange);
+TH_EXPORT_CPP_API_OffAudioDeviceChange(OffAudioDeviceChange);
+TH_EXPORT_CPP_API_OnPostDialDelay(OnPostDialDelay);
+TH_EXPORT_CPP_API_OffPostDialDelay(OffPostDialDelay);
+TH_EXPORT_CPP_API_OnImsCallModeChange(OnImsCallModeChange);
+TH_EXPORT_CPP_API_OffImsCallModeChange(OffImsCallModeChange);
+TH_EXPORT_CPP_API_OnCallSessionEvent(OnCallSessionEvent);
+TH_EXPORT_CPP_API_OffCallSessionEvent(OffCallSessionEvent);
+TH_EXPORT_CPP_API_OnPeerDimensionsChange(OnPeerDimensionsChange);
+TH_EXPORT_CPP_API_OffPeerDimensionsChange(OffPeerDimensionsChange);
+TH_EXPORT_CPP_API_OnCameraCapabilitiesChange(OnCameraCapabilitiesChange);
+TH_EXPORT_CPP_API_OffCameraCapabilitiesChange(OffCameraCapabilitiesChange);
 // NOLINTEND
