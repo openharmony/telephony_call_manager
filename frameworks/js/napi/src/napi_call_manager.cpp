@@ -659,62 +659,6 @@ napi_value NapiCallManager::DeclareCallStateToAppEnum(napi_env env, napi_value e
     return exports;
 }
 
-napi_value NapiCallManager::DeclareCCallStateToAppEnum(napi_env env, napi_value exports)
-{
-    napi_property_descriptor desc[] = {
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_UNKNOWN",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_UNKNOWN))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_ACTIVE",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_ACTIVE))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_HOLDING",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_HOLDING))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_DIALING",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_DIALING))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_ALERTING",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_ALERTING))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_INCOMING",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_INCOMING))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_WAITING",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_WAITING))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_DISCONNECTED",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_DISCONNECTED))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_DISCONNECTING",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_DISCONNECTING))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_IDLE",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_IDLE))),
-        DECLARE_NAPI_STATIC_PROPERTY("CCALL_STATE_ANSWERED",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallState::CALL_STATE_ANSWERED))),
-    };
-    napi_value result = nullptr;
-    napi_define_class(env, "CCallState", NAPI_AUTO_LENGTH, NapiCallManagerUtils::CreateEnumConstructor, nullptr,
-        sizeof(desc) / sizeof(*desc), desc, &result);
-    napi_set_named_property(env, exports, "CCallState", result);
-    return exports;
-}
-
-napi_value NapiCallManager::DeclareTelCallStateToAppEnum(napi_env env, napi_value exports)
-{
-    napi_property_descriptor desc[] = {
-        DECLARE_NAPI_STATIC_PROPERTY("TEL_CALL_STATE_UNKNOWN",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallStateToApp::TEL_CALL_STATE_UNKNOWN))),
-        DECLARE_NAPI_STATIC_PROPERTY("TEL_CALL_STATE_IDLE",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallStateToApp::TEL_CALL_STATE_IDLE))),
-        DECLARE_NAPI_STATIC_PROPERTY("TEL_CALL_STATE_RINGING",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallStateToApp::TEL_CALL_STATE_RINGING))),
-        DECLARE_NAPI_STATIC_PROPERTY("TEL_CALL_STATE_OFFHOOK",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallStateToApp::TEL_CALL_STATE_OFFHOOK))),
-        DECLARE_NAPI_STATIC_PROPERTY("TEL_CALL_STATE_ANSWERED",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallStateToApp::TEL_CALL_STATE_ANSWERED))),
-        DECLARE_NAPI_STATIC_PROPERTY("TEL_CALL_STATE_CONNECTED",
-            NapiCallManagerUtils::ToInt32Value(env, static_cast<int32_t>(TelCallStateToApp::TEL_CALL_STATE_CONNECTED))),
-    };
-    napi_value result = nullptr;
-    napi_define_class(env, "TelCallState", NAPI_AUTO_LENGTH, NapiCallManagerUtils::CreateEnumConstructor, nullptr,
-        sizeof(desc) / sizeof(*desc), desc, &result);
-    napi_set_named_property(env, exports, "TelCallState", result);
-    return exports;
-}
-
 napi_value NapiCallManager::DeclareCallEventEnumEx(napi_env env, napi_value exports)
 {
     napi_property_descriptor desc[] = {
@@ -1204,8 +1148,6 @@ napi_value NapiCallManager::RegisterCallManagerFunc(napi_env env, napi_value exp
     DeclareTelCallStateEnum(env, exports);
     DeclareConferenceStateEnum(env, exports);
     DeclareCallStateToAppEnum(env, exports);
-    DeclareCCallStateToAppEnum(env, exports);
-    DeclareTelCallStateToAppEnum(env, exports);
     DeclareCallEventEnumEx(env, exports);
     DeclareCallSessionEventEnumEx(env, exports);
     DeclareRestrictionTypeEnum(env, exports);
