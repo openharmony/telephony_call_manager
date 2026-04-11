@@ -59,6 +59,8 @@ public:
     static napi_value DeclareTelCallStateEnum(napi_env env, napi_value exports);
     static napi_value DeclareConferenceStateEnum(napi_env env, napi_value exports);
     static napi_value DeclareCallStateToAppEnum(napi_env env, napi_value exports);
+    static napi_value DeclareCCallStateToAppEnum(napi_env env, napi_value exports);
+    static napi_value DeclareTelCallStateToAppEnum(napi_env env, napi_value exports);
     static napi_value DeclareCallEventEnumEx(napi_env env, napi_value exports);
     static napi_value DeclareCallSessionEventEnumEx(napi_env env, napi_value exports);
     static napi_value DeclareRestrictionTypeEnum(napi_env env, napi_value exports);
