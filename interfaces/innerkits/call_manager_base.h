@@ -408,6 +408,43 @@ enum class CallStateToApp {
 };
 
 /**
+ * @brief Indicates the call state which will report to APP.
+ */
+enum class TelCallStateToApp {
+    /**
+     * Indicates an invalid state, which is used when the call state
+     * fails to be obtained.
+     */
+    TEL_CALL_STATE_UNKNOWN = -1,
+
+    /**
+     * Indicates that there is no ongoing call.
+     */
+    TEL_CALL_STATE_IDLE = 0,
+
+    /**
+     * Indicates that an incoming call is ringing or waiting.
+     */
+    TEL_CALL_STATE_RINGING = 1,
+
+    /**
+     * Indicates that a least one call is in the dialing, active, or hold
+     * state, and there is no new incoming call ringing or waiting.
+     */
+    TEL_CALL_STATE_OFFHOOK = 2,
+
+    /**
+     * Indicates that an incoming call is answered.
+     */
+    TEL_CALL_STATE_ANSWERED = 3,
+
+    /**
+     * Indicates that a call is active, or hold state.
+     */
+    TEL_CALL_STATE_CONNECTED = 4
+};
+
+/**
  * @brief Indicates the cause when the call is answered.
  */
 enum class CallAnswerType {

@@ -229,5 +229,7 @@ export default {
     onRttErrCause: call.onRttErrCause,
     offRttErrCause: call.offRttErrCause,
     onReceiveRttMessage: call.onReceiveRttMessage,
-    offReceiveRttMessage: call.offReceiveRttMessage
+    offReceiveRttMessage: call.offReceiveRttMessage,
+    TelCallState: call.TelCallState,
+    CCallState: call.CCallState
 };
