@@ -128,7 +128,8 @@ void AudioControlManager::HandleCallStateUpdatedForVoip(
 {
     TELEPHONY_LOGI("control audio for voip start, callId:%{public}d, priorState:%{public}d, nextState:%{public}d",
         callObjectPtr->GetCallID(), priorState, nextState);
-    if (priorState == TelCallState::CALL_STATUS_INCOMING && nextState == TelCallState::CALL_STATUS_INCOMING) {
+    if ((priorState == TelCallState::CALL_STATUS_INCOMING && nextState == TelCallState::CALL_STATUS_INCOMING) ||
+        (priorState == TelCallState::CALL_STATUS_DIALING && nextState == TelCallState::CALL_STATUS_DIALING)) {
         if (DelayedSingleton<CallObjectManager>::GetInstance()->GetVoipCallNum() == 1) {
             AudioDevice device = {
                 .deviceType = AudioDeviceType::DEVICE_EARPIECE,
