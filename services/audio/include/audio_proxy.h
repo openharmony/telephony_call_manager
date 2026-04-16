@@ -21,6 +21,7 @@
 #include "ffrt.h"
 
 #include "audio_system_manager.h"
+#include "audio_stream_manager.h"
 #include "call_manager_errors.h"
 #include "call_manager_inner_type.h"
 #include "singleton.h"
@@ -81,7 +82,7 @@ public:
     int32_t SetVolumeWithDevice(AudioStandard::AudioVolumeType audioVolumeType, int32_t volume,
         AudioStandard::DeviceType deviceType);
     int32_t SetMaxVolume(AudioStandard::AudioVolumeType audioVolumeType);
-    bool IsStreamActive(AudioStandard::AudioVolumeType audioVolumeType);
+    bool IsStreamActiveByStreamUsage(AudioStandard::StreamUsage streamUsage);
     bool IsStreamMute(AudioStandard::AudioVolumeType audioVolumeType);
     int32_t GetMaxVolume(AudioStandard::AudioVolumeType audioVolumeType);
     int32_t GetMinVolume(AudioStandard::AudioVolumeType audioVolumeType);

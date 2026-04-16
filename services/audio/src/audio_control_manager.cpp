@@ -909,7 +909,8 @@ void AudioControlManager::PlayRingtone(const sptr<CallBase>& incomingCall, const
     std::unique_lock<ffrt::mutex> lock(incomingMutex_);
     auto isIncomingConflict = isIncomingConflict_;
     lock.unlock();
-    if (!isIncomingConflict && !audioProxy->IsStreamActive(AudioStandard::AudioVolumeType::STREAM_VOICE_RING)) {
+    if (!isIncomingConflict &&
+        !audioProxy->IsStreamActiveByStreamUsage(AudioStandard::StreamUsage::STREAM_USAGE_VOICE_RINGTONE)) {
         PlayRing(incomingCall, info, contactInfo);
         return;
     }
