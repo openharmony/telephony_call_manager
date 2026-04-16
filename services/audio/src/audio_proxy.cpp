@@ -209,9 +209,9 @@ void AudioProxy::SetVolumeAudible()
         (int32_t)(volume / VOLUME_AUDIBLE_DIVISOR));
 }
 
-bool AudioProxy::IsStreamActive(AudioStandard::AudioVolumeType audioVolumeType)
+bool AudioProxy::IsStreamActiveByStreamUsage(AudioStandard::StreamUsage streamUsage)
 {
-    return AudioStandard::AudioSystemManager::GetInstance()->IsStreamActive(audioVolumeType);
+    return AudioStandard::AudioStreamManager::GetInstance()->IsStreamActiveByStreamUsage(streamUsage);
 }
 
 bool AudioProxy::IsStreamMute(AudioStandard::AudioVolumeType audioVolumeType)
