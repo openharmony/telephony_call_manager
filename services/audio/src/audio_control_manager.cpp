@@ -918,7 +918,7 @@ void AudioControlManager::PlayRingtone(const sptr<CallBase>& incomingCall, const
         int32_t retryCount = 0;
         for (; retryCount < MAX_RINGTONE_RETRY_COUNT; ++retryCount) {
             std::this_thread::sleep_for(std::chrono::milliseconds(RINGTONE_RETRY_TIME));
-            if (!audioProxy->IsStreamActive(AudioStandard::AudioVolumeType::STREAM_VOICE_RING)) {
+            if (!audioProxy->IsStreamActiveByStreamUsage(AudioStandard::StreamUsage::STREAM_USAGE_VOICE_RINGTONE)) {
                 PlayRing(incomingCall, info, contactInfo);
                 break;
             }
