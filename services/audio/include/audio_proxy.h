@@ -21,7 +21,6 @@
 #include "ffrt.h"
 
 #include "audio_system_manager.h"
-#include "audio_stream_manager.h"
 #include "call_manager_errors.h"
 #include "call_manager_inner_type.h"
 #include "singleton.h"
