@@ -18,7 +18,7 @@
 #ifdef SUPPORT_VIBRATOR
 #include "vibrator_agent.h"
 #endif
-
+#include "audio_stream_manager.h"
 #include "telephony_log_wrapper.h"
 #include "call_control_manager.h"
 #include "bluetooth_call_manager.h"
