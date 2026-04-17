@@ -47,6 +47,7 @@ int32_t CallPolicy::DialPolicy(std::u16string &number, AppExecFwk::PacMap &extra
     std::string phoneNum = Str16ToStr8(number);
     if (!IsDialingEnable(phoneNum)) {
         TELEPHONY_LOGE("MDM policy is disabled!");
+        DelayedSingleton<CallDialog>::GetInstance()->DialogConnectExtension("CALL_FAILED_POLICY_DISABLED");
         return TELEPHONY_ERR_POLICY_DISABLED;
     }
     int32_t accountId = extras.GetIntValue("accountId");
