@@ -907,9 +907,10 @@ void AudioControlManager::PlayRingtone(const sptr<CallBase>& incomingCall, const
         return;
     }
     std::unique_lock<ffrt::mutex> lock(incomingMutex_);
-    auto isIncomingConflict = isIncomingConflict_;
+    bool isIncomingConflict = isIncomingConflict_;
     lock.unlock();
-    if (!isIncomingConflict && !audioProxy->IsStreamActive(AudioStandard::AudioVolumeType::STREAM_VOICE_RING)) {
+    if (!isIncomingConflict &&
+        !audioProxy->IsStreamActiveByStreamUsage(AudioStandard::StreamUsage::STREAM_USAGE_VOICE_RINGTONE)) {
         PlayRing(incomingCall, info, contactInfo);
         return;
     }
@@ -917,12 +918,12 @@ void AudioControlManager::PlayRingtone(const sptr<CallBase>& incomingCall, const
         int32_t retryCount = 0;
         for (; retryCount < MAX_RINGTONE_RETRY_COUNT; ++retryCount) {
             std::this_thread::sleep_for(std::chrono::milliseconds(RINGTONE_RETRY_TIME));
-            if (!audioProxy->IsStreamActive(AudioStandard::AudioVolumeType::STREAM_VOICE_RING)) {
+            if (!audioProxy->IsStreamActiveByStreamUsage(AudioStandard::StreamUsage::STREAM_USAGE_VOICE_RINGTONE)) {
                 PlayRing(incomingCall, info, contactInfo);
                 break;
             }
         }
-        TELEPHONY_LOGE("PlayRingtone IsStreamActive retryCount is %{public}d", retryCount);
+        TELEPHONY_LOGE("retryCount is %{public}d", retryCount);
     });
 }
 

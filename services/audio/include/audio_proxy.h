@@ -81,7 +81,7 @@ public:
     int32_t SetVolumeWithDevice(AudioStandard::AudioVolumeType audioVolumeType, int32_t volume,
         AudioStandard::DeviceType deviceType);
     int32_t SetMaxVolume(AudioStandard::AudioVolumeType audioVolumeType);
-    bool IsStreamActive(AudioStandard::AudioVolumeType audioVolumeType);
+    bool IsStreamActiveByStreamUsage(AudioStandard::StreamUsage streamUsage);
     bool IsStreamMute(AudioStandard::AudioVolumeType audioVolumeType);
     int32_t GetMaxVolume(AudioStandard::AudioVolumeType audioVolumeType);
     int32_t GetMinVolume(AudioStandard::AudioVolumeType audioVolumeType);
