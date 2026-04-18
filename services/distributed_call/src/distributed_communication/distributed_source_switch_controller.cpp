@@ -29,29 +29,12 @@ namespace Telephony {
 void DistributedSourceSwitchController::OnDeviceOnline(const std::string &devId, const std::string &devName,
     AudioDeviceType devType)
 {
-    static std::atomic<uint32_t> onlineEVentCount(0);
-    constexpt uint32_t MAX_EVENTS_PER_SECOND = 100;
-
-    if (onlineEVentCount++ > MAX_EVENTS_PER_SECOND) {
-        return;
-    }
-
-    ffrt::submit([devId, devName, devType]() {
-        auto audioDeviceManager = DelayedSingleton<AudioDeviceManager>::GetInstance();
-        if (audioDeviceManager != nullptr) {
-            std::string address = GetDevAddress(devId, devName);
-            audioDeviceManager->AddAudioDeviceList(address, devType, devName);
-        }
-    });
-
-    static auto lastRestTime = std::chrono::steady_clock::now();
-    auto now = std::chrono::steady_clock::now();
     auto audioDeviceManager = DelayedSingleton<AudioDeviceManager>::GetInstance();
-    if (now - lastRestTime > std::chrono::seconds(1)) {
-        onlineEVentCount = 0;
-        lastRestTime = now;
+    if (audioDeviceManager != nullptr) {
+        std::string address = GetDevAddress(devId, devName);
+        audioDeviceManager->AddAudioDeviceList(address, devType, devName);
     }
-    
+
 #ifdef ABILITY_BLUETOOTH_SUPPORT
     std::lock_guard<ffrt::mutex> lock(mutex_);
     if (hfpListener_ == nullptr) {
