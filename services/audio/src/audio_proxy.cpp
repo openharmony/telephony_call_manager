@@ -18,7 +18,7 @@
 #ifdef SUPPORT_VIBRATOR
 #include "vibrator_agent.h"
 #endif
-
+#include "audio_stream_manager.h"
 #include "telephony_log_wrapper.h"
 #include "call_control_manager.h"
 #include "bluetooth_call_manager.h"
@@ -209,9 +209,9 @@ void AudioProxy::SetVolumeAudible()
         (int32_t)(volume / VOLUME_AUDIBLE_DIVISOR));
 }
 
-bool AudioProxy::IsStreamActive(AudioStandard::AudioVolumeType audioVolumeType)
+bool AudioProxy::IsStreamActiveByStreamUsage(AudioStandard::StreamUsage streamUsage)
 {
-    return AudioStandard::AudioSystemManager::GetInstance()->IsStreamActive(audioVolumeType);
+    return AudioStandard::AudioStreamManager::GetInstance()->IsStreamActiveByStreamUsage(streamUsage);
 }
 
 bool AudioProxy::IsStreamMute(AudioStandard::AudioVolumeType audioVolumeType)

@@ -225,7 +225,6 @@ bool AudioSceneProcessor::SwitchIncoming()
     }
     currentState_ = std::make_unique<IncomingState>();
     if (currentState_ == nullptr) {
-        TELEPHONY_LOGE("make_unique IncomingState failed");
         return false;
     }
     int32_t state;
