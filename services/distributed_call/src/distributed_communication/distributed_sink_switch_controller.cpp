@@ -104,7 +104,7 @@ void DistributedSinkSwitchController::TrySwitchToBtHeadset()
 #ifdef ABILITY_BLUETOOTH_SUPPORT
 void DcCallHfpListener::OnHfpStackChanged(const Bluetooth::BluetoothRemoteDevice &device, int32_t action)
 {
-    TELEPHONY_LOGI("dc call hfp stack changed, action[%{public}d], preAction_[%{public}d]", 
+    TELEPHONY_LOGI("dc call hfp stack changed, action[%{public}d], preAction_[%{public}d]",
         action, preAction_.load(std::memory_oeder_relaxed));
     int32_t cod = DEFAULT_HFP_FLAG_VALUE;
     int32_t majorClass = DEFAULT_HFP_FLAG_VALUE;
