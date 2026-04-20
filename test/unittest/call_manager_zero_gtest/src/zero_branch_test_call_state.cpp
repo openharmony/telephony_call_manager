@@ -687,7 +687,7 @@ HWTEST_F(CallStateTest, Telephony_Tone_GetStreamUsageByToneType_DC, TestSize.Lev
     ASSERT_EQ(tone->GetStreamUsageByToneType(ToneDescriptor::TONE_RINGBACK),
         AudioStandard::StreamUsage::STREAM_USAGE_VOICE_COMMUNICATION);
     ASSERT_EQ(tone->GetStreamUsageByToneType(ToneDescriptor::TONE_FINISHED),
-        AudioStandard::StreamUsage::STREAM_USAGE_VOICE_COMMUNICATION);
+        AudioStandard::StreamUsage::STREAM_USAGE_VOICE_RINGTONE);
 }
 #endif
 
