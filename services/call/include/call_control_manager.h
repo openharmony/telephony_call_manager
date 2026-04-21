@@ -256,7 +256,7 @@ private:
     CallStateToApp VoIPCallState_ = CallStateToApp::CALL_STATE_IDLE;
     bool shouldDisconnect = true;
     bool ReduceRingToneVolume_ = false;
-    static bool alarmSeted;
+    static std::atomic<bool> alarmSeted;
     struct AnsweredCallQueue {
         bool hasCall = false;
         int32_t callId = 0;
