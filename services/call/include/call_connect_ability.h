@@ -41,9 +41,9 @@ public:
 private:
     sptr<AAFwk::IAbilityConnection> connectCallback_ = nullptr;
     ffrt::mutex connectAbilityMutex_;
-    bool isConnected_ = false;
-    bool isConnecting_ = false;
-    bool isDisconnecting_ = false;
+    std::stomic<bool> isConnected_ = false;
+    std::stomic<bool> isConnecting_ = false;
+    std::stomic<bool> isDisconnecting_ = false;
     static ffrt::condition_variable cv_;
     ffrt::mutex mutex_;
 };
