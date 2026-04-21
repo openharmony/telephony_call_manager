@@ -168,7 +168,7 @@ void DistributedDeviceObserver::OnRemoveSystemAbility()
 int32_t DistributedDeviceCallback::OnDistributedDeviceOnline(const std::string &devId, const std::string &devName,
                                                              int32_t devType, int32_t devRole)
 {
-    if (devId > MAX_DEVICE_ID_LEN || devName > MAX_DEVICE_NAME_LEN) {
+    if (devId.size() > MAX_DEVICE_ID_LEN || devName.size() > MAX_DEVICE_NAME_LEN) {
         return TELEPHONY_ERROR;
     }
     TELEPHONY_LOGI("dev online, type %{public}d, role %{public}d", devType, devRole);
