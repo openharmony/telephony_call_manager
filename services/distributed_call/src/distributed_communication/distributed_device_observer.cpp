@@ -25,6 +25,8 @@ const int32_t DISTRIBUTED_COMMUNICATION_CALL_SA_ID = 66198;
 const int32_t DISTRIBUTED_COMMUNICATION_PHONE = 0;
 const int32_t DISTRIBUTED_COMMUNICATION_PAD = 1;
 const int32_t DISTRIBUTED_COMMUNICATION_PC = 2;
+const int32_t MAX_DEVICE_ID_LEN = 100;
+const int32_t MAX_DEVICE_NAME_LEN = 100;
 
 void DistributedDeviceObserver::Init()
 {
@@ -166,6 +168,9 @@ void DistributedDeviceObserver::OnRemoveSystemAbility()
 int32_t DistributedDeviceCallback::OnDistributedDeviceOnline(const std::string &devId, const std::string &devName,
                                                              int32_t devType, int32_t devRole)
 {
+    if (devId > MAX_DEVICE_ID_LEN || devName > MAX_DEVICE_NAME_LEN) {
+        return TELEPHONY_ERROR;
+    }
     TELEPHONY_LOGI("dev online, type %{public}d, role %{public}d", devType, devRole);
     AudioDeviceType deviceType = ConvertDeviceType(devType);
     if (deviceType == AudioDeviceType::DEVICE_UNKNOWN) {

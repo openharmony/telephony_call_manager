@@ -605,7 +605,7 @@ private:
     sptr<ICallStatusCallback> cellularCallCallbackPtr_;
     sptr<CellularCallInterface> cellularCallInterfacePtr_;
     sptr<ISystemAbilityStatusChange> statusChangeListener_ = nullptr;
-    bool connectState_;
+    std::atomic<bool> connectState_;
     ffrt::shared_mutex clientLock_;
 };
 } // namespace Telephony
