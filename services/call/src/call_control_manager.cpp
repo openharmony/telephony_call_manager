@@ -60,7 +60,7 @@
 #endif
 namespace OHOS {
 namespace Telephony {
-bool CallControlManager::alarmSeted = false;
+std::atomic<bool> CallControlManager::alarmSeted = false;
 constexpr int32_t CRS_TYPE = 2;
 const uint64_t DISCONNECT_DELAY_TIME = 1000000;
 static const int32_t SATCOMM_UID = 1096;
