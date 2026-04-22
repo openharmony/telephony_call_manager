@@ -60,7 +60,7 @@
 #endif
 namespace OHOS {
 namespace Telephony {
-std::atomic<bool> CallControlManager::alarmSeted = false;
+std::atomic<bool> CallControlManager::alarmseted_ = false;
 constexpr int32_t CRS_TYPE = 2;
 const uint64_t DISCONNECT_DELAY_TIME = 1000000;
 static const int32_t SATCOMM_UID = 1096;
@@ -1269,7 +1269,7 @@ void CallControlManager::GetDialParaInfo(DialParaInfo &info, AppExecFwk::PacMap 
 
 void CallControlManager::handler()
 {
-    alarmSeted = false;
+    alarmseted_ = false;
     TELEPHONY_LOGE("handle DisconnectAbility");
     if (!CallObjectManager::HasCallExist()) {
         DelayedSingleton<CallConnectAbility>::GetInstance()->DisconnectAbility();
@@ -1292,22 +1292,22 @@ bool CallControlManager::cancel(ffrt::task_handle &handle)
 void CallControlManager::ConnectCallUiService(bool shouldConnect)
 {
     if (shouldConnect) {
-        if (alarmSeted) {
+        if (alarmseted_) {
             if (!cancel(disconnectHandle)) {
                 return;
             }
-            alarmSeted = false;
+            alarmseted_ = false;
         }
         DelayedSingleton<CallConnectAbility>::GetInstance()->ConnectAbility();
         shouldDisconnect = false;
     } else {
         shouldDisconnect = true;
-        if (!alarmSeted) {
+        if (!alarmseted_) {
             TELEPHONY_LOGI("submit delay disconnect ability");
             disconnectHandle = ffrt::submit_h([&]() {
                 handler();
             }, {}, {}, ffrt::task_attr().delay(DISCONNECT_DELAY_TIME));
-            alarmSeted = true;
+            alarmseted_ = true;
         }  else {
             if (!cancel(disconnectHandle)) {
                 return;
