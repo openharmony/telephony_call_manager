@@ -1318,11 +1318,11 @@ HWTEST_F(ZeroBranch4Test, Telephony_CallControlManager_012, Function | MediumTes
     int32_t state = 0;
     EXPECT_EQ(callControlManager->GetVoNRState(-1, state), CALL_ERR_INVALID_SLOT_ID);
     EXPECT_EQ(callControlManager->CloseUnFinishedUssd(-1), CALL_ERR_INVALID_SLOT_ID);
-    CallControlManager::alarmseted_ = true;
+    CallControlManager::alarmSeted_ = true;
     callControlManager->ConnectCallUiService(true);
-    CallControlManager::alarmseted_ = true;
+    CallControlManager::alarmSeted_ = true;
     callControlManager->ConnectCallUiService(false);
-    CallControlManager::alarmseted_ = true;
+    CallControlManager::alarmSeted_ = true;
     callControlManager->ConnectCallUiService(true);
     EXPECT_NE(callControlManager->RemoveMissedIncomingCallNotification(), TELEPHONY_SUCCESS);
 }
