@@ -497,10 +497,13 @@ int32_t CallStatusManager::IncomingHandle(const CallDetailInfo &info)
     }
     SetContactInfo(call, std::string(info.phoneNum));
     bool block = false;
-    if (IsRejectCall(call, info, block)) {
-        return HandleRejectCall(call, block);
+    auto dcMgrInstance = DelayedSingleton<DistributedCommunicationManager>::GetInstance();
+    if (!(dcMgrInstance->IsSinkRole() && dcMgrInstance->IsConnected())) {
+        if (IsRejectCall(call, info, block)) {
+            return HandleRejectCall(call, block);
+        }
+        PublishIncomingCallBlockInfo(call, block);
     }
-    PublishIncomingCallBlockInfo(call, block);
     if (info.callType != CallType::TYPE_VOIP && info.callType != CallType::TYPE_BLUETOOTH &&
         IsRingOnceCall(call, info)) {
         return HandleRingOnceCall(call);
