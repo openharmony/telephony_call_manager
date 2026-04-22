@@ -35,8 +35,8 @@ InteroperableCommunicationManager::~InteroperableCommunicationManager()
  
 void InteroperableCommunicationManager::OnDeviceOnline(const DistributedHardware::DmDeviceInfo &deviceInfo)
 {
-    std::string networkId(deviceInfo.networkId, strnlen(deviceInfo.networkId, size(deviceInfo.networkId)));
-    std::string devName(deviceInfo.deviceName, strnlen(deviceInfo.deviceName, size(deviceInfo.deviceName)));
+    std::string networkId(deviceInfo.networkId, strnlen(deviceInfo.networkId, std::size(deviceInfo.networkId)));
+    std::string devName(deviceInfo.deviceName, strnlen(deviceInfo.deviceName, std::size(deviceInfo.deviceName)));
     uint16_t devType = deviceInfo.deviceTypeId;
     {
         std::lock_guard<ffrt::mutex> lock(mutex_);
