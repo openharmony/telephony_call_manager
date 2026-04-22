@@ -76,10 +76,7 @@ int32_t CallPolicy::DialPolicy(std::u16string &number, AppExecFwk::PacMap &extra
         return TELEPHONY_ERR_ARGUMENT_INVALID;
     }
     if (!isEcc) {
-        if (IsVoiceCallValid(videoState) != TELEPHONY_SUCCESS) {
-            return CALL_ERR_CALL_COUNTS_EXCEED_LIMIT;
-        }
-        if (HasNewCall() != TELEPHONY_SUCCESS) {
+        if (IsVoiceCallValid(videoState) != TELEPHONY_SUCCESS || HasNewCall() != TELEPHONY_SUCCESS) {
             return CALL_ERR_CALL_COUNTS_EXCEED_LIMIT;
         }
         bool hasEccCall = false;
