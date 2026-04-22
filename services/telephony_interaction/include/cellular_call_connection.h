@@ -603,7 +603,7 @@ private:
 private:
     int32_t systemAbilityId_;
     sptr<ICallStatusCallback> cellularCallCallbackPtr_;
-    sptr<CellularCallInterface> cellularCallInterfacePtr_;
+    std::atomic<sptr<CellularCallInterface>> cellularCallInterfacePtr_;
     sptr<ISystemAbilityStatusChange> statusChangeListener_ = nullptr;
     std::atomic<bool> connectState_;
     ffrt::shared_mutex clientLock_;
