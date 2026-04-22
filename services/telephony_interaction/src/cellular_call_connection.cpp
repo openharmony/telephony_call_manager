@@ -45,7 +45,7 @@ CellularCallConnection::~CellularCallConnection()
 void CellularCallConnection::Init(int32_t systemAbilityId)
 {
     TELEPHONY_LOGI("CellularCallConnection Init start");
-    if (connectState_.load()) {
+    if (connectState_) {
         TELEPHONY_LOGE("Init, connectState is true");
         return;
     }
@@ -85,7 +85,7 @@ void CellularCallConnection::UnInit()
 
 bool CellularCallConnection::IsConnect() const
 {
-    return connectState_.load();
+    return connectState_;
 }
 
 int32_t CellularCallConnection::ConnectService()
@@ -113,7 +113,7 @@ int32_t CellularCallConnection::ConnectService()
     if (ret != TELEPHONY_SUCCESS) {
         return ret;
     }
-    connectState_.store(true);
+    connectState_ = true;
     return TELEPHONY_SUCCESS;
 }
 
@@ -171,7 +171,7 @@ void CellularCallConnection::Clean()
         cellularCallCallbackPtr_ = nullptr;
     }
 
-    connectState_.store(false);
+    connectState_ = false;
 }
 
 int CellularCallConnection::Dial(const CellularCallInfo &callInfo)
