@@ -652,28 +652,28 @@ HWTEST_F(ZeroBranch4Test, Telephony_CallRecordsManager_001, TestSize.Level0)
     CallAttributeInfo info;
     info.callBeginTime = DEFAULT_TIME;
     info.callEndTime = ONE_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     info.callBeginTime = ONE_TIME;
     info.callEndTime = DEFAULT_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     info.callBeginTime = DEFAULT_TIME;
     info.callEndTime = DEFAULT_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     info.callBeginTime = ONE_TIME;
     info.callEndTime = ONE_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     info.ringBeginTime = DEFAULT_TIME;
     info.ringEndTime = ONE_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     info.ringBeginTime = ONE_TIME;
     info.ringEndTime = DEFAULT_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     info.ringBeginTime = DEFAULT_TIME;
     info.ringEndTime = DEFAULT_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     info.ringBeginTime = ONE_TIME;
     info.ringEndTime = ONE_TIME;
-    callRecordsManager.AddOneCallRecord(info);
+    callRecordsManager.AddOneCallRecord(callObjectPtr, info);
     callRecordsManager.RemoveMissedIncomingCallNotification();
     info.originalCallType = static_cast<int32_t>(VideoStateType::TYPE_VIDEO);
     callRecordsManager.GetCallFeatures(info);
@@ -721,9 +721,10 @@ HWTEST_F(ZeroBranch4Test, Telephony_CallRecordsManager_RetainOriginNumber, TestS
     callRecordsManager.Init();
 
     CallAttributeInfo info;
+    sptr<CallBase> callObjectPtr = nullptr;
     std::string number = "13188889999,0655";
     memcpy_s(&info.accountNumber, kMaxNumberLen, number.c_str(), number.length());
-    EXPECT_NO_THROW(callRecordsManager.AddOneCallRecord(info));
+    EXPECT_NO_THROW(callRecordsManager.AddOneCallRecord(callObjectPtr, info));
     EXPECT_EQ(std::string(info.accountNumber), number);
 }
 
