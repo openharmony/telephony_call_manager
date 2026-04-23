@@ -31,7 +31,7 @@ CallRecordsHandler::CallRecordsHandler() : callDataPtr_(nullptr)
     }
 }
 
-int32_t CallRecordsHandler::AddCallLogInfo(const CallRecordInfo &info)
+int32_t CallRecordsHandler::AddCallLogInfo(const sptr<CallBase> &callObjectPtr, const CallRecordInfo &info)
 {
     if (callDataPtr_ == nullptr) {
         TELEPHONY_LOGE("callDataPtr is nullptr!");
@@ -55,7 +55,36 @@ int32_t CallRecordsHandler::AddCallLogInfo(const CallRecordInfo &info)
     }
     TELEPHONY_LOGI("callLog Insert success.");
     DeleteCallLogForLimit(info);
+    if (IsMissedCall(callObjectPtr)) {
+        PublishMissedCall(callObjectPtr);
+    }
     return TELEPHONY_SUCCESS;
+}
+
+bool CallRecordsHandler::IsMissedCall(const sptr<CallBase> &callObjectPtr)
+{
+    if (callObjectPtr == nullptr) {
+        TELEPHONY_LOGE("callObjectPtr is null");
+        return false;
+    }
+    if (callObjectPtr->GetCallDirection() != CallDirection::CALL_DIRECTION_IN) {
+        return false;
+    }
+    CallAnswerType answerType = callObjectPtr->GetAnswerType();
+    if (answerType == CallAnswerType::CALL_ANSWER_MISSED ||
+        (answerType == CallAnswerType::CALL_ANSWER_ACTIVED && callObjectPtr->IsAiAutoAnswer())) {
+        return true;
+    }
+    return false;
+}
+
+void CallRecordsHandler::PublishMissedCall(const sptr<CallBase> &callObjectPtr)
+{
+    if (missedCallNotification_ == nullptr) {
+        missedCallNotification_ = std::make_shared<MissedCallNotification>();
+    }
+    TELEPHONY_LOGI("PublishMissedCallEvent after insert calllog");
+    missedCallNotification_->PublishMissedCallEvent(callObjectPtr);
 }
 
 void CallRecordsHandler::DeleteCallLogForLimit(const CallRecordInfo &info)
@@ -155,13 +184,15 @@ void CallRecordsHandlerService::Start()
     return;
 }
 
-int32_t CallRecordsHandlerService::StoreCallRecord(const CallRecordInfo &info)
+int32_t CallRecordsHandlerService::StoreCallRecord(const sptr<CallBase> &callObjectPtr, const CallRecordInfo &info)
 {
     if (handler_.get() == nullptr) {
         TELEPHONY_LOGE("handler_ is nullptr");
         return TELEPHONY_ERR_LOCAL_PTR_NULL;
     }
-    ffrt::submit([=]() { handler_->AddCallLogInfo(info); });
+    ffrt::submit([handler = handler_, callObj = callObjectPtr, info = std::move(info)]() {
+        handler->AddCallLogInfo(callObj, info);
+    });
     return TELEPHONY_SUCCESS;
 }
 
