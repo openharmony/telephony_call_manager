@@ -25,8 +25,8 @@ const int32_t DISTRIBUTED_COMMUNICATION_CALL_SA_ID = 66198;
 const int32_t DISTRIBUTED_COMMUNICATION_PHONE = 0;
 const int32_t DISTRIBUTED_COMMUNICATION_PAD = 1;
 const int32_t DISTRIBUTED_COMMUNICATION_PC = 2;
-const int32_t MAX_DEVICE_ID_LEN = 100;
-const int32_t MAX_DEVICE_NAME_LEN = 100;
+const int32_t MAX_DEVICE_ID_LEN = 70;
+const int32_t MAX_DEVICE_NAME_LEN = 70;
 
 void DistributedDeviceObserver::Init()
 {
