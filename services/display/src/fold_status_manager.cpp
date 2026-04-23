@@ -30,7 +30,7 @@ FoldStatusManager::~FoldStatusManager() {};
 FoldStatusManager::FoldStatusManager()
 {
     TELEPHONY_LOGI("Enter FoldStatusManager");
-    mOldFoldStatus = Rosen::FoldStatus::UNKNOWN;
+    oldFoldStatus_ = Rosen::FoldStatus::UNKNOWN;
 };
 
 void FoldStatusManager::RegisterFoldableListener()
@@ -49,7 +49,7 @@ void FoldStatusManager::RegisterFoldableListener()
         TELEPHONY_LOGE("Rosen::DisplayManager::RegisterFoldStatusListener failed");
         foldStatusListener_ = nullptr;
     } else {
-        mOldFoldStatus = Rosen::DisplayManager::GetInstance().GetFoldStatus();
+        oldFoldStatus_ = Rosen::DisplayManager::GetInstance().GetFoldStatus();
         TELEPHONY_LOGI("Rosen::DisplayManager::RegisterFoldStatusListener success");
     }
 }
@@ -64,7 +64,7 @@ void FoldStatusManager::UnregisterFoldableListener()
     if (ret != Rosen::DMError::DM_OK) {
         TELEPHONY_LOGE("Rosen::DisplayManager::UnregisterFoldStatusListener failed");
     } else {
-        mOldFoldStatus = Rosen::FoldStatus::UNKNOWN;
+        oldFoldStatus_ = Rosen::FoldStatus::UNKNOWN;
         foldStatusListener_ = nullptr;
         TELEPHONY_LOGI("Rosen::DisplayManager::UnregisterFoldStatusListener success");
     }
@@ -72,7 +72,7 @@ void FoldStatusManager::UnregisterFoldableListener()
 
 void FoldStatusManager::FoldStatusListener::OnFoldStatusChanged(Rosen::FoldStatus foldStatus)
 {
-    auto oldFoldStatus = DelayedSingleton<FoldStatusManager>::GetInstance()->mOldFoldStatus;
+    auto oldFoldStatus = DelayedSingleton<FoldStatusManager>::GetInstance()->oldFoldStatus_;
     TELEPHONY_LOGI("OnFoldStatusChanged foldStatus is %{public}d, oldFoldStatus is %{public}d",
         static_cast<int32_t>(foldStatus), static_cast<int32_t>(oldFoldStatus));
     if (foldStatus == oldFoldStatus) {
@@ -80,7 +80,7 @@ void FoldStatusManager::FoldStatusListener::OnFoldStatusChanged(Rosen::FoldStatu
         return;
     }
     DelayedSingleton<CallDialog>::GetInstance()->DialogCallingPrivacyModeExtension(foldStatus);
-    DelayedSingleton<FoldStatusManager>::GetInstance()->mOldFoldStatus = foldStatus;
+    DelayedSingleton<FoldStatusManager>::GetInstance()->oldFoldStatus_ = foldStatus;
 }
 
 bool FoldStatusManager::IsSmallFoldDevice()
