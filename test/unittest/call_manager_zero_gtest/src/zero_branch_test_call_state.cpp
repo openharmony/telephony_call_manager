@@ -1038,8 +1038,8 @@ HWTEST_F(CallStateTest, Telephony_CoreServiceConnection_001, TestSize.Level0)
  * @tc.name     test PrepareIncomingCall function with TYPE_CS
  * @tc.desc     Function test - verify PrepareIncomingCall covers new if branch for TYPE_CS
  */
- HWTEST_F(CallStateTest, Telephony_CallStatusManager_PrepareIncomingCall_001, TestSize.Level0)
- {
+HWTEST_F(CallStateTest, Telephony_CallStatusManager_PrepareIncomingCall_001, TestSize.Level0)
+{
     CallObjectManager::callObjectPtrList_.clear();
     auto callStatusManager = DelayedSingleton<CallStatusManager>::GetInstance();
     ASSERT_NE(callStatusManager, nullptr);
@@ -1050,7 +1050,7 @@ HWTEST_F(CallStateTest, Telephony_CoreServiceConnection_001, TestSize.Level0)
     int32_t ret = callStatusManager->PrepareIncomingCall(info, isExisted);
     EXPECT_EQ(isExisted, false);
     EXPECT_NE(ret, TELEPHONY_ERR_ARGUMENT_NULL);
- }
+}
 #endif
 } // namespace Telephony
 } // namespace OHOS

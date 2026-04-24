@@ -521,7 +521,7 @@ int32_t CallStatusManager::IncomingHandle(const CallDetailInfo &info)
     return ret;
 }
 
-int32_t CallStatusManager::PrepareIncomingCall(const CallDetailInfo &info, boll &isExisted)
+int32_t CallStatusManager::PrepareIncomingCall(const CallDetailInfo &info, bool &isExisted)
 {
     detectStartTime_ = std::chrono::system_clock::from_time_t(0);
     int32_t ret = RefreshOldCall(info, isExisted);
