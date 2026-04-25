@@ -69,10 +69,10 @@ public:
     void Init();
     void UnInit();
     void CallStateUpdated(sptr<CallBase> &callObjectPtr, TelCallState priorState, TelCallState nextState) override;
-    void AddOneCallRecord(CallAttributeInfo &info);
-    void CopyCallInfoToRecord(CallAttributeInfo &info, CallRecordInfo &data);
+    void AddOneCallRecord(const sptr<CallBase> &callObjectPtr, const CallAttributeInfo &info);
+    void CopyCallInfoToRecord(const CallAttributeInfo &info, CallRecordInfo &data);
     int32_t RemoveMissedIncomingCallNotification();
-    int32_t GetCallFeatures(CallAttributeInfo &info);
+    int32_t GetCallFeatures(const CallAttributeInfo &info);
     bool IsVideoCall(int32_t videoState);
     void SetDataShareReady(bool isDataShareReady);
     void SetSystemAbilityAdd(bool isSystemAbilityAdd);

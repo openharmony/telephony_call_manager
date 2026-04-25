@@ -160,7 +160,7 @@ void CallRecordsManager::CallStateUpdated(
 #ifdef SUPPORT_RTT_CALL
     RefreshRttFlag(callObjectPtr, info);
 #endif
-    AddOneCallRecord(info);
+    AddOneCallRecord(callObjectPtr, info);
 }
 
 #ifdef SUPPORT_RTT_CALL
@@ -173,7 +173,7 @@ void CallRecordsManager::RefreshRttFlag(sptr<CallBase> &callObjectPtr, CallAttri
 }
 #endif
 
-void CallRecordsManager::AddOneCallRecord(CallAttributeInfo &info)
+void CallRecordsManager::AddOneCallRecord(const sptr<CallBase> &callObjectPtr, const CallAttributeInfo &info)
 {
     CallRecordInfo data;
     (void)memset_s(&data, sizeof(CallRecordInfo), 0, sizeof(CallRecordInfo));
@@ -219,7 +219,7 @@ void CallRecordsManager::AddOneCallRecord(CallAttributeInfo &info)
     if (formatToE164Ret != TELEPHONY_SUCCESS) {
         return;
     }
-    callRecordsHandlerServerPtr_->StoreCallRecord(data);
+    callRecordsHandlerServerPtr_->StoreCallRecord(callObjectPtr, data);
 }
 
 std::string CallRecordsManager::GetCountryIso()
@@ -276,7 +276,7 @@ int32_t CallRecordsManager::CopyFormatNumberToE164ToRecord(std::string &countryI
     return TELEPHONY_SUCCESS;
 }
 
-void CallRecordsManager::CopyCallInfoToRecord(CallAttributeInfo &info, CallRecordInfo &data)
+void CallRecordsManager::CopyCallInfoToRecord(const CallAttributeInfo &info, CallRecordInfo &data)
 {
     if ((info.callBeginTime == DEFAULT_TIME) || (info.callEndTime == DEFAULT_TIME)) {
         data.callDuration = DEFAULT_TIME;
@@ -360,7 +360,7 @@ int32_t CallRecordsManager::RemoveMissedIncomingCallNotification()
     return TELEPHONY_SUCCESS;
 }
 
-int32_t CallRecordsManager::GetCallFeatures(CallAttributeInfo &info)
+int32_t CallRecordsManager::GetCallFeatures(const CallAttributeInfo &info)
 {
     uint32_t features = 0;
     if (IsVideoCall(info.originalCallType)) {

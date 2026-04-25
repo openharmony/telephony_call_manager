@@ -32,7 +32,7 @@ public:
     void IncomingCallHungUp(sptr<CallBase> &callObjectPtr, bool isSendSms, std::string content) override;
     void CallStateUpdated(sptr<CallBase> &callObjectPtr, TelCallState priorState, TelCallState nextState) override;
     int32_t NotifyUnReadMissedCall(std::map<std::string, int32_t> &phoneNumAndUnreadCountMap);
-    void PublishMissedCallEvent(sptr<CallBase> &callObjectPtr);
+    void PublishMissedCallEvent(const sptr<CallBase> &callObjectPtr);
     void PublishBlockedCallEvent(sptr<CallBase> &callObjectPtr);
 
 private:
