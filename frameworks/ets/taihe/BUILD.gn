@@ -67,8 +67,6 @@ taihe_shared_library("telephony_call_taihe_native") {
     "core_service:libtel_common",
     "core_service:tel_core_service_api",
     "hilog:libhilog",
-    "image_framework:image",
-    "image_framework:image_native",
     "init:libbegetutil",
     "libuv:uv",
     "napi:ace_napi",
@@ -84,6 +82,7 @@ taihe_shared_library("telephony_call_taihe_native") {
   sanitize = {
     cfi = true
     cfi_cross_dso = true
+    cfi_no_nvcall = true
     debug = false
   }
   branch_protector_ret = "pac_ret"
