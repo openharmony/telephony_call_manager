@@ -80,6 +80,7 @@ bool CallRecordsHandler::IsMissedCall(const sptr<CallBase> &callObjectPtr)
 
 void CallRecordsHandler::PublishMissedCall(const sptr<CallBase> &callObjectPtr)
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     if (missedCallNotification_ == nullptr) {
         missedCallNotification_ = std::make_shared<MissedCallNotification>();
     }
@@ -149,6 +150,7 @@ int32_t CallRecordsHandler::QueryAndNotifyUnReadMissedCall()
         TELEPHONY_LOGE("callDataPtr is nullptr!");
         return TELEPHONY_ERR_LOCAL_PTR_NULL;
     }
+    std::lock_guard<std::mutex> lock(mutex_);
     missedCallNotification_ = std::make_shared<MissedCallNotification>();
     if (missedCallNotification_ == nullptr) {
         TELEPHONY_LOGE("missedCallNotification_ is null!");
