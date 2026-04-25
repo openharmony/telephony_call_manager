@@ -46,6 +46,7 @@ private:
 private:
     std::shared_ptr<CallDataBaseHelper> callDataPtr_;
     std::shared_ptr<MissedCallNotification> missedCallNotification_;
+    std::mutex mutex_;
 };
 
 class CallRecordsHandlerService : public std::enable_shared_from_this<CallRecordsHandlerService> {
