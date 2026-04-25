@@ -326,6 +326,7 @@ struct CallAttributeOptions {
 struct CallEventOptions {
     eventId: CallAbilityEventId;
 }
+
 struct DisconnectedDetails {
     reason: DisconnectedReason;
     message: String;
@@ -335,6 +336,7 @@ struct MmiCodeResults {
     result: MmiCodeResult;
     message: String;
 }
+
 struct AudioDevice {
     deviceType: AudioDeviceType;
     address: Optional<String>;
@@ -418,10 +420,6 @@ struct CallTransferResult {
     startMinute: i32;
     endHour: i32;
     endMinute: i32;
-}
-
-struct CallEventOptions {
-    eventId: CallAbilityEventId;
 }
 
 @gen_async("makeCall")
@@ -665,39 +663,6 @@ function SetCallTransferPromise(slotId: i32, info: CallTransferInfo): @sts_type(
 function CloseUnfinishedUssdAsync(slotId: i32, opq: @sts_type("AsyncCallback<void>") Opaque): void;
 @rename("closeUnfinishedUssd")
 function CloseUnfinishedUssdPromise(slotId: i32): @sts_type("Promise<void>") Opaque;
-
-@!sts_inject("""
-export function on(type: string, cb: (arg_0: Object) => void) {
-    switch(type) {
-        case "callDetailsChange": return OnCallDetailsChange(cb);
-        case "callEventChange": return OnCallEventChange(cb);
-        case "callDisconnectedCause": return OnCallDisconnectedCauses(cb);
-        case "mmiCodeResult": return OnMmiCodeResult(cb);
-        case "audioDeviceChange": return OnAudioDeviceChange(cb);
-        case "postDialDelay": return OnPostDialDelay(cb);
-        case "imsCallModeChange": return OnImsCallModeChange(cb);
-        case "callSessionEvent": return OnCallSessionEvent(cb);
-        case "peerDimensionsChange": return OnPeerDimensionsChange(cb);
-        case "cameraCapabilitiesChange": return OnCameraCapabilitiesChange(cb);
-        default: throw new Error(`Unknown type: ${type}`);
-    }
-}
-export function off(type: string, cb?: (arg_0: Object) => void) {
-    switch(type) {
-        case "callDetailsChange": return OffCallDetailsChange(cb as (((data: CallAttributeOptions) => void) | undefined));
-        case "callEventChange": return OffCallEventChange(cb as (((data: CallEventOptions) => void) | undefined));
-        case "callDisconnectedCause": return OffCallDisconnectedCauses(cb as (((data: DisconnectedDetails) => void) | undefined));
-        case "mmiCodeResult": return OffMmiCodeResult(cb as (((data: MmiCodeResults) => void) | undefined));
-        case "audioDeviceChange": return OffAudioDeviceChange(cb as (((data: AudioDeviceCallbackInfo) => void) | undefined));
-        case "postDialDelay": return OffPostDialDelay(cb as (((data: string) => void) | undefined));
-        case "imsCallModeChange": return OffImsCallModeChange(cb as (((data: ImsCallModeInfo) => void) | undefined));
-        case "callSessionEvent": return OffCallSessionEvent(cb as (((data: CallSessionEvent) => void) | undefined));
-        case "peerDimensionsChange": return OffPeerDimensionsChange(cb as (((data: PeerDimensionsDetail) => void) | undefined));
-        case "cameraCapabilitiesChange": return OffCameraCapabilitiesChange(cb as (((data: CameraCapabilities) => void) | undefined));
-        default: throw new Error(`Unknown type: ${type}`);
-    }
-}
-""")
 
 // 通话详情变化回调
 function OnCallDetailsChange(callback: (data: CallAttributeOptions) => void): void;

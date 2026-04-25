@@ -80,7 +80,8 @@
                 "openssl",
                 "libphonenumber",
                 "screenlock_mgr",
-                "watch_system_service"
+                "watch_system_service",
+                "runtime_core"
             ],
             "third_party": [
                 "libphonenumber",
@@ -92,7 +93,8 @@
                 "base_group": [
                 ],
                 "fwk_group": [
-                    "//base/telephony/call_manager/frameworks/js:call"
+                    "//base/telephony/call_manager/frameworks/js:call",
+                    "//base/telephony/call_manager/frameworks/ets/taihe:telephony_call_taihe"
                 ],
                 "service_group": [
                     "//base/telephony/call_manager:tel_call_manager",
