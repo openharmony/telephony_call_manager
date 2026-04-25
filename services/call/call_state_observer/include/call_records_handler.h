@@ -33,24 +33,27 @@ public:
     CallRecordsHandler();
     virtual ~CallRecordsHandler() = default;
     int32_t QueryAndNotifyUnReadMissedCall();
-    int32_t AddCallLogInfo(const CallRecordInfo &info);
+    int32_t AddCallLogInfo(const sptr<CallBase> &callObjectPtr, const CallRecordInfo &info);
 
 private:
     std::string CheckNumberLocationInfo(const CallRecordInfo &info);
     void MakeCallLogInsertBucket(DataShare::DataShareValuesBucket &bucket,
         const CallRecordInfo &info, std::string displayName, std::string numberLocation);
     void DeleteCallLogForLimit(const CallRecordInfo &info);
+    bool IsMissedCall(const sptr<CallBase> &callObjectPtr);
+    void PublishMissedCall(const sptr<CallBase> &callObjectPtr);
 
 private:
     std::shared_ptr<CallDataBaseHelper> callDataPtr_;
     std::shared_ptr<MissedCallNotification> missedCallNotification_;
+    std::mutex mutex_;
 };
 
 class CallRecordsHandlerService : public std::enable_shared_from_this<CallRecordsHandlerService> {
     DECLARE_DELAYED_SINGLETON(CallRecordsHandlerService)
 public:
     void Start();
-    int32_t StoreCallRecord(const CallRecordInfo &info);
+    int32_t StoreCallRecord(const sptr<CallBase> &callObjectPtr, const CallRecordInfo &info);
     int32_t RemoveMissedIncomingCallNotification();
     int32_t QueryUnReadMissedCallLog();
 

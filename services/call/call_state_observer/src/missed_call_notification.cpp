@@ -53,7 +53,7 @@ void MissedCallNotification::CallStateUpdated(
     }
 }
 
-void MissedCallNotification::PublishMissedCallEvent(sptr<CallBase> &callObjectPtr)
+void MissedCallNotification::PublishMissedCallEvent(const sptr<CallBase> &callObjectPtr)
 {
     AAFwk::Want want;
     want.SetParam("callId", callObjectPtr->GetCallID());
