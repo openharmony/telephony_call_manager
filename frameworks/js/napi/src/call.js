@@ -13,10 +13,9 @@
  * limitations under the License.
  */
 const call = requireInternal('telephony.call');
-const systemParameterEnhance = requireInternal('systemParameterEnhance');
+const fileFs = requireInternal('file.fs');
 const ARGUMENTS_LEN_TWO = 2;
 const ARGUMENTS_LEN_ONE = 1;
-const ABILITY_NAME_INVALID_INDEX = -1;
 async function makeCallFunc(...args) {
     if ((arguments.length === ARGUMENTS_LEN_TWO && typeof arguments[1] === 'function') ||
         (args.length === ARGUMENTS_LEN_TWO && typeof args[1] === 'object') ||
@@ -69,13 +68,16 @@ async function startAbility(args, context) {
         bundleName: 'com.ohos.contacts',
         abilityName: 'com.ohos.contacts.MainAbility'
     };
-    let actName = systemParameterEnhance.getSync('const.telephony.makecall_ability_name', '');
-    if (actName !== '') {
-        let pos = actName.lastIndexOf('.');
-        if (pos !== ABILITY_NAME_INVALID_INDEX) {
-            config.bundleName = actName.slice(0, pos);
-            config.abilityName = actName;
+    try {
+        let fileContent = fileFs.readTextSync('/sys_prod/etc/telephony/call_manager_config.json');
+        let jsonData = JSON.parse(fileContent);
+        if (jsonData && jsonData.dialer &&
+            jsonData.dialer.bundleName && jsonData.dialer.abilityName) {
+            config.bundleName = jsonData.dialer.bundleName;
+            config.abilityName = jsonData.dialer.abilityName;
         }
+    } catch (error) {
+        console.log('[call] read json error: ' + error);
     }
     if (args.length > 0 && typeof args[0] === 'string') {
         let phoneNumberUri = new URL(args[0]);
