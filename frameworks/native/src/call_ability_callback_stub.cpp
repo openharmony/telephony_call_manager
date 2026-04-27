@@ -21,6 +21,7 @@
 #include "bundle_mgr_proxy.h"
 #include "bundle_mgr_interface.h"
 #include "call_manager_errors.h"
+#include "iservice_registry.h"
 #include "native_call_manager_utils.h"
 #include "system_ability_definition.h"
 #include "telephony_log_wrapper.h"
@@ -528,7 +529,7 @@ bool CallAbilityCallbackStub::CheckSelfPermission()
     }
     AppExecFwk::BundleInfo bundleInfo;
     if (proxy->GetBundleInfoForSelf(static_cast<int32_t>(AppExecFwk::BundleFlag::GET_BUNDLE_DEFAULT), bundleInfo)) {
-        return ecurity::AccessToken::AccessTokenKit::VerifyAccessToken(
+        return Security::AccessToken::AccessTokenKit::VerifyAccessToken(
             bundleInfo.applicationInfo.accessTokenId, OHOS_PERMISSION_GET_CALL_TRANSFER_INFO) == PERMISSION_GRANTED;
     }
     return false;
