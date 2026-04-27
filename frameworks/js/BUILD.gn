@@ -78,6 +78,7 @@ ohos_shared_library("call") {
     "ability_base:want",
     "ability_runtime:ability_manager",
     "ability_runtime:napi_common",
+    "access_token:libaccesstoken_sdk",
     "c_utils:utils",
     "core_service:libtel_common",
     "core_service:tel_core_service_api",
