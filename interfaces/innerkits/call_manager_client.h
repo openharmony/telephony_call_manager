@@ -757,7 +757,6 @@ public:
      * @return Returns 0 on success, others on failure.
      */
     int32_t GetCallTransferInfo(std::string number, CallTransferType type);
-
 };
 } // namespace Telephony
 } // namespace OHOS
