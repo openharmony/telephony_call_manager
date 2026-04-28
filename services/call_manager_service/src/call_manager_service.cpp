@@ -74,8 +74,8 @@ static constexpr int32_t CLEAR_VOICE_MAIL_COUNT = 0;
 static constexpr int32_t IS_CELIA_CALL = 1;
 static constexpr int32_t EDM_UID = 3057;
 static constexpr int32_t AUDIO_UID = 1041;
-static std::unordered_map<std::string, std::chrono::steady_clock::time_point> lastCallTimes;
-const int32_t THIRTY_SECOND = 30;
+static std::unordered_map<std::string, std::chrono::steady_clock::time_point> lastGetCallTransferInfoTimes_;
+static const int32_t MIN_GET_CALL_TRANSFER_TIME = 30;
 
 const bool g_registerResult =
     SystemAbility::MakeAndRegisterAbility(DelayedSingleton<CallManagerService>::GetInstance().get());
@@ -1997,7 +1997,7 @@ int32_t CallManagerService::HangUpCall()
     }
 }
 
-int32_t CallManagerService::GetCallTransferInfo(std::string number, CallTransferType type)
+int32_t CallManagerService::GetCallTransferInfo(const std::string number, CallTransferType type)
 {
     if (!TelephonyPermission::CheckPermission(OHOS_PERMISSION_GET_CALL_TRANSFER_INFO)) {
         TELEPHONY_LOGE("Permission denied!");
@@ -2011,11 +2011,12 @@ int32_t CallManagerService::GetCallTransferInfo(std::string number, CallTransfer
 
     std::string key = number + ":" + std::to_string(static_cast<int>(type));
     auto now = std::chrono::steady_clock::now();
-    if (lastCallTimes.find(key) != lastCallTimes.end() &&
-        std::chrono::duration_cast<std::chrono::seconds>(now - lastCallTimes[key]).count() < THIRTY_SECOND) {
+    if (lastGetCallTransferInfoTimes_.find(key) != lastGetCallTransferInfoTimes_.end() &&
+        std::chrono::duration_cast<std::chrono::seconds>(now - lastGetCallTransferInfoTimes_[key]).count() <
+            MIN_GET_CALL_TRANSFER_TIME) {
         return CALL_ERR_OPERATION_TOO_FREQUENT;
     }
-    lastCallTimes[key] = now;
+    lastGetCallTransferInfoTimes_[key] = now;
     if (callControlManagerPtr_ != nullptr) {
         return callControlManagerPtr_->GetCallTransferInfo(slotId, type);
     } else {

@@ -383,7 +383,7 @@ int32_t CallNumberUtils::QueryYellowPageAndMarkInfo(NumberMarkInfo &numberMarkIn
     return TELEPHONY_SUCCESS;
 }
 
-bool CallNumberUtils::GetAccountIdByNumber(const std::u16string inputNumber, int32_t& slotId)
+bool CallNumberUtils::GetAccountIdByNumber(const std::u16string &inputNumber, int32_t& slotId)
 {
     for (int32_t i = 0; i < SIM_SLOT_COUNT; i++) {
         std::u16string showNumber;
@@ -396,7 +396,7 @@ bool CallNumberUtils::GetAccountIdByNumber(const std::u16string inputNumber, int
     return false;
 }
 
-bool CallNumberUtils::IsSamePhoneNumber(const std::u16string localNumber, const std::u16string inputNumber)
+bool CallNumberUtils::IsSamePhoneNumber(const std::u16string &localNumber, const std::u16string &inputNumber)
 {
     std::string localNumberStr = NormalizePhoneNumber(localNumber);
     std::string inputNumberStr = NormalizePhoneNumber(inputNumber);
@@ -407,7 +407,7 @@ bool CallNumberUtils::IsSamePhoneNumber(const std::u16string localNumber, const 
     return localNumberStr == inputNumberStr;
 }
 
-std::string CallNumberUtils::NormalizePhoneNumber(const std::u16string number)
+std::string CallNumberUtils::NormalizePhoneNumber(const std::u16string &number)
 {
     std::string normalized = std::regex_replace(Str16ToStr8(number), std::regex("[^0-9]"), "");
     std::regex pattern("1\\d{10}");

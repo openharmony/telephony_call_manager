@@ -171,8 +171,8 @@ void CallManagerServiceStub::InitCallSupplementRequest()
         [this](MessageParcel &data, MessageParcel &reply) { return OnCloseUnFinishedUssd(data, reply); };
     memberFuncMap_[static_cast<int32_t>(CallManagerInterfaceCode::INTERFACE_SEND_USSD_RESPONSE)] =
         [this](MessageParcel &data, MessageParcel &reply) { return OnSendUssdResponse(data, reply); };
-    memberFuncMap_[static_cast<int32_t>(CallManagerInterfaceCode::INTERFACE_GET_CALL_TRANSFER_WITH_NUM)] =
-        [this](MessageParcel &data, MessageParcel &reply) { return OnGetTransferNumberWithNum(data, reply); };
+    memberFuncMap_[static_cast<int32_t>(CallManagerInterfaceCode::INTERFACE_GET_CALL_TRANSFER_BY_NUMBER)] =
+        [this](MessageParcel &data, MessageParcel &reply) { return OnGetTransferNumberByNumber(data, reply); };
 }
 
 void CallManagerServiceStub::initCallConferenceExRequest()
@@ -1627,7 +1627,7 @@ int32_t CallManagerServiceStub::OnHangUpCallNoParam(MessageParcel &data, Message
     return result;
 }
 
-int32_t CallManagerServiceStub::OnGetTransferNumberWithNum(MessageParcel &data, MessageParcel &reply)
+int32_t CallManagerServiceStub::OnGetTransferNumberByNumber(MessageParcel &data, MessageParcel &reply)
 {
     int32_t result = TELEPHONY_ERR_FAIL;
     std::string number = data.ReadString();

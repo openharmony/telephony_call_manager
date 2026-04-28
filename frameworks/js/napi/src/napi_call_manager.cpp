@@ -2045,7 +2045,7 @@ napi_value NapiCallManager::GetCallTransferInfo(napi_env env, napi_callback_info
         NapiUtil::ThrowParameterError(env);
         return nullptr;
     }
-    bool execute = true;
+    bool isGetCallTransferInfoByNumber = false;
     if (NapiCallManagerUtils::MatchValueType(env, argv[ARRAY_INDEX_SECOND], napi_number)) {
         napi_get_value_int32(env, argv[ARRAY_INDEX_FIRST], &asyncContext->slotId);
         napi_get_value_int32(env, argv[ARRAY_INDEX_SECOND], &asyncContext->type);
@@ -2053,7 +2053,7 @@ napi_value NapiCallManager::GetCallTransferInfo(napi_env env, napi_callback_info
         napi_get_value_int32(env, argv[ARRAY_INDEX_FIRST], &asyncContext->type);
         napi_get_value_string_utf8(env, argv[ARRAY_INDEX_SECOND], asyncContext->number,
             PHONE_NUMBER_MAXIMUM_LIMIT, &(asyncContext->numberLen));
-        execute = false;
+        isGetCallTransferInfoByNumber = true;
     }
     if (argc == VALUE_MAXIMUM_LIMIT) {
         napi_create_reference(env, argv[ARRAY_INDEX_THIRD], DATA_LENGTH_ONE, &(asyncContext->callbackRef));
@@ -2061,7 +2061,7 @@ napi_value NapiCallManager::GetCallTransferInfo(napi_env env, napi_callback_info
     asyncContext->env = env;
     napi_create_reference(env, thisVar, DATA_LENGTH_ONE, &(asyncContext->thisVar));
     return HandleAsyncWork(env, asyncContext.release(), "GetCallTransferInfo",
-        execute ? NativeGetTransferNumber : NativeGetCallTransferWithNum, NativeCallBack);
+        execute ? NativeGetCallTransferByNumber : NativeGetTransferNumber, NativeCallBack);
 }
 
 napi_value NapiCallManager::SetCallTransferInfo(napi_env env, napi_callback_info info)
@@ -5476,10 +5476,10 @@ void NapiCallManager::NativeHangUpCallNoParam(napi_env env, void *data)
     asyncContext->eventId = CALL_MANAGER_DISCONNECT_CALL;
 }
 
-void NapiCallManager::NativeGetCallTransferWithNum(napi_env env, void *data)
+void NapiCallManager::NativeGetCallTransferByNumber(napi_env env, void *data)
 {
     if (data == nullptr) {
-        TELEPHONY_LOGE("NapiCallManager::NativeGetCallTransferWithNum data is nullptr");
+        TELEPHONY_LOGE("NapiCallManager::NativeGetCallTransferByNumber data is nullptr");
         NapiUtil::ThrowParameterError(env);
         return;
     }
@@ -5497,8 +5497,12 @@ void NapiCallManager::NativeGetCallTransferWithNum(napi_env env, void *data)
     }
     CallTransferType type = static_cast<CallTransferType>(asyncContext->type);
     std::string number(asyncContext->number, asyncContext->numberLen);
-    asyncContext->errorCode =
-        DelayedSingleton<CallManagerClient>::GetInstance()->GetCallTransferInfo(number, type);
+    auto callManagerClient = DelayedSingleton<CallManagerClient>::GetInstance();
+    if (callManagerClient == nullptr) {
+        TELEPHONY_LOGE("callManagerClient is nullptr!");
+        return;
+    }
+    asyncContext->errorCode = callManagerClient->GetCallTransferInfo(number, type);
     if (asyncContext->errorCode != TELEPHONY_SUCCESS) {
         asyncContext->eventId = CALL_MANAGER_GET_CALL_TRANSFER;
         DelayedSingleton<NapiCallAbilityCallback>::GetInstance()->UnRegisterGetTransferCallback();

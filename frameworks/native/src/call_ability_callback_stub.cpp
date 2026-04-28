@@ -178,16 +178,21 @@ int32_t CallAbilityCallbackStub::OnUpdateAysncResults(MessageParcel &data, Messa
             resultInfo.PutIntValue("status", data.ReadInt32());
             resultInfo.PutIntValue("classCw", data.ReadInt32());
             break;
-        case CallResultReportId::GET_CALL_TRANSFER_REPORT_ID:
+        case CallResultReportId::GET_CALL_TRANSFER_REPORT_ID:{
             resultInfo.PutIntValue("status", data.ReadInt32());
             resultInfo.PutIntValue("classx", data.ReadInt32());
-            if (!CheckSelfPermission()) {
-                resultInfo.PutStringValue("number", data.ReadString());
+            std::string number = data.ReadString();
+            if (HasGetCallTransferPermission()) {
+                resultInfo.PutStringValue("number", "");
+            } else {
+                resultInfo.PutStringValue("number", number);
             }
+            resultInfo.PutStringValue("number", number);
             resultInfo.PutIntValue("type", data.ReadInt32());
             resultInfo.PutIntValue("reason", data.ReadInt32());
             resultInfo.PutIntValue("time", data.ReadInt32());
             break;
+        }
         case CallResultReportId::GET_CALL_CLIP_ID:
             resultInfo.PutIntValue("action", data.ReadInt32());
             resultInfo.PutIntValue("clipStat", data.ReadInt32());
@@ -515,7 +520,7 @@ int32_t CallAbilityCallbackStub::OnUpdateRttCallMessage(MessageParcel &data, Mes
 }
 #endif
 
-bool CallAbilityCallbackStub::CheckSelfPermission()
+bool CallAbilityCallbackStub::HasGetCallTransferPermission()
 {
     sptr<ISystemAbilityManager> systemAbilityManager =
         SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();

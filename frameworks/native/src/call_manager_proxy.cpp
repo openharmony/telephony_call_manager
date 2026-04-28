@@ -1899,7 +1899,7 @@ int32_t CallManagerProxy::HangUpCall()
     return TELEPHONY_SUCCESS;
 }
 
-int32_t CallManagerProxy::GetCallTransferInfo(std::string number, CallTransferType type)
+int32_t CallManagerProxy::GetCallTransferInfo(const std::string number, CallTransferType type)
 {
     if (ReConnectService() != TELEPHONY_SUCCESS) {
         TELEPHONY_LOGE("GetCallTransferInfo: ipc reconnect failed!");
