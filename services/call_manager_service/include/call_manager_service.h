@@ -940,6 +940,7 @@ private:
     sptr<ICallStatusCallback> bluetoothCallCallbackPtr_ = nullptr;
     std::shared_ptr<BluetoothCallState> bluetoothCallObserver_ = nullptr;
     std::shared_ptr<CallStatusManager> callStatusManagerPtr_ = nullptr;
+    ffrt::mutex callTransferLock_;
 };
 } // namespace Telephony
 } // namespace OHOS

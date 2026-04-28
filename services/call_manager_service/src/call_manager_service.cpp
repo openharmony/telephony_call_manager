@@ -74,7 +74,7 @@ static constexpr int32_t CLEAR_VOICE_MAIL_COUNT = 0;
 static constexpr int32_t IS_CELIA_CALL = 1;
 static constexpr int32_t EDM_UID = 3057;
 static constexpr int32_t AUDIO_UID = 1041;
-const std::unordered_map<std::string, std::chrono::steady_clock::time_point> lastCallTimes;
+static std::unordered_map<std::string, std::chrono::steady_clock::time_point> lastCallTimes;
 const int32_t THIRTY_SECOND = 30;
 
 const bool g_registerResult =
@@ -2003,6 +2003,7 @@ int32_t CallManagerService::GetCallTransferInfo(std::string number, CallTransfer
         TELEPHONY_LOGE("Permission denied!");
         return TELEPHONY_ERR_PERMISSION_ERR;
     }
+    std::lock_guard<ffrt::mutex> guard(callTransferLock_);
     int32_t slotId = 0;
     if (!DelayedSingleton<CallNumberUtils>::GetInstance()->GetAccountIdByNumber(Str8ToStr16(number), slotId)) {
         return CALL_ERR_INVALID_CALL_NUMBER;
@@ -2011,7 +2012,7 @@ int32_t CallManagerService::GetCallTransferInfo(std::string number, CallTransfer
     std::string key = number + ":" + std::to_string(static_cast<int>(type));
     auto now = std::chrono::steady_clock::now();
     if (lastCallTimes.find(key) != lastCallTimes.end() &&
-        std::chrono::duration_cast<std::chrono::seconds>(now - lastCallTimes[key].count() < THIRTY_SECOND)) {
+        std::chrono::duration_cast<std::chrono::seconds>(now - lastCallTimes[key]).count() < THIRTY_SECOND) {
         return CALL_ERR_OPERATION_TOO_FREQUENT;
     }
     lastCallTimes[key] = now;

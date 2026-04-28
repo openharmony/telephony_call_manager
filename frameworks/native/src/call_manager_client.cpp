@@ -917,7 +917,7 @@ int32_t CallManagerClient::GetCallTransferInfo(std::string number, CallTransferT
     if (g_callManagerProxy != nullptr) {
         return g_callManagerProxy->GetCallTransferInfo(number, type);
     } else {
-        TELEPHONY_LOGE("GetCallTransferInfo init first please!");
+        TELEPHONY_LOGE("GetCallTransferInfo by number, init first please!");
         return TELEPHONY_ERR_UNINIT;
     }
 }

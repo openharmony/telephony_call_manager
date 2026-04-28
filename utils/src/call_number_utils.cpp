@@ -383,10 +383,10 @@ int32_t CallNumberUtils::QueryYellowPageAndMarkInfo(NumberMarkInfo &numberMarkIn
     return TELEPHONY_SUCCESS;
 }
 
-bool CallNumberUtils::GetAccountIdByNumber(const std::u16string& inputNumber, int32_t slotId)
+bool CallNumberUtils::GetAccountIdByNumber(const std::u16string inputNumber, int32_t& slotId)
 {
     for (int32_t i = 0; i < SIM_SLOT_COUNT; i++) {
-        std::string showNumber;
+        std::u16string showNumber;
         DelayedRefSingleton<CoreServiceClient>::GetInstance().GetShowNumber(i, showNumber);
         if (IsSamePhoneNumber(showNumber, inputNumber)) {
             slotId = i;
@@ -396,7 +396,7 @@ bool CallNumberUtils::GetAccountIdByNumber(const std::u16string& inputNumber, in
     return false;
 }
 
-bool CallNumberUtils::IsSamePhoneNumber(const std::u16string& localNumber, const std::u16string& inputNumber)
+bool CallNumberUtils::IsSamePhoneNumber(const std::u16string localNumber, const std::u16string inputNumber)
 {
     std::string localNumberStr = NormalizePhoneNumber(localNumber);
     std::string inputNumberStr = NormalizePhoneNumber(inputNumber);
@@ -404,16 +404,12 @@ bool CallNumberUtils::IsSamePhoneNumber(const std::u16string& localNumber, const
         TELEPHONY_LOGE("localNumberStr or inputNumberStr is empty");
         return false;
     }
-    if (localNumberStr.find(inputNumberStr) != std::string::npos ||
-        inputNumberStr.find(localNumberStr) != std::string::npos) {
-        return true;
-    }
-    return false;
+    return localNumberStr == inputNumberStr;
 }
 
-std::string CallNumberUtils::NormalizePhoneNumber(const std::u16string& number)
+std::string CallNumberUtils::NormalizePhoneNumber(const std::u16string number)
 {
-    std::string normalized = std::regx_replace(Str16ToStr8(number), std::regex("[^0-9]"), "");
+    std::string normalized = std::regex_replace(Str16ToStr8(number), std::regex("[^0-9]"), "");
     std::regex pattern("1\\d{10}");
     std::smatch match;
     if (std::regex_search(normalized, match, pattern)) {
