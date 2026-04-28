@@ -912,7 +912,7 @@ int32_t CallManagerClient::HangUpCall()
     }
 }
 
-int32_t CallManagerClient::GetCallTransferInfo(std::string number, CallTransferType type)
+int32_t CallManagerClient::GetCallTransferInfo(const std::string number, CallTransferType type)
 {
     if (g_callManagerProxy != nullptr) {
         return g_callManagerProxy->GetCallTransferInfo(number, type);

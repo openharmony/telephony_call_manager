@@ -904,7 +904,7 @@ public:
      * @param type[in], Call Transfer Type
      * @return Returns 0 on success, others on failure.
      */
-    int32_t GetCallTransferInfo(std::string number, CallTransferType type) override;
+    int32_t GetCallTransferInfo(const std::string number, CallTransferType type) override;
 
 private:
     std::string GetBundleInfo();
