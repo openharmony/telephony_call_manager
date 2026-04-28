@@ -187,7 +187,6 @@ int32_t CallAbilityCallbackStub::OnUpdateAysncResults(MessageParcel &data, Messa
             } else {
                 resultInfo.PutStringValue("number", number);
             }
-            resultInfo.PutStringValue("number", number);
             resultInfo.PutIntValue("type", data.ReadInt32());
             resultInfo.PutIntValue("reason", data.ReadInt32());
             resultInfo.PutIntValue("time", data.ReadInt32());
