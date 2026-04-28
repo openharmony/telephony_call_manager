@@ -2061,7 +2061,7 @@ napi_value NapiCallManager::GetCallTransferInfo(napi_env env, napi_callback_info
     asyncContext->env = env;
     napi_create_reference(env, thisVar, DATA_LENGTH_ONE, &(asyncContext->thisVar));
     return HandleAsyncWork(env, asyncContext.release(), "GetCallTransferInfo",
-        execute ? NativeGetCallTransferByNumber : NativeGetTransferNumber, NativeCallBack);
+        isGetCallTransferInfoByNumber ? NativeGetCallTransferByNumber : NativeGetTransferNumber, NativeCallBack);
 }
 
 napi_value NapiCallManager::SetCallTransferInfo(napi_env env, napi_callback_info info)
