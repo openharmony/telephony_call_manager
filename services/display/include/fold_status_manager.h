@@ -42,7 +42,7 @@ public:
 
 private:
     sptr<Rosen::DisplayManager::IFoldStatusListener> foldStatusListener_;
-    Rosen::FoldStatus oldFoldStatus_;
+    std::atomic<Rosen::FoldStatus> oldFoldStatus_;
 };
 } // namespace Telephony
 } // namespace OHOS
