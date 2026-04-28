@@ -72,7 +72,7 @@ void FoldStatusManager::UnregisterFoldableListener()
 
 void FoldStatusManager::FoldStatusListener::OnFoldStatusChanged(Rosen::FoldStatus foldStatus)
 {
-    auto oldFoldStatus = DelayedSingleton<FoldStatusManager>::GetInstance()->oldFoldStatus_;
+    auto oldFoldStatus = DelayedSingleton<FoldStatusManager>::GetInstance()->oldFoldStatus_.load();
     TELEPHONY_LOGI("OnFoldStatusChanged foldStatus is %{public}d, oldFoldStatus is %{public}d",
         static_cast<int32_t>(foldStatus), static_cast<int32_t>(oldFoldStatus));
     if (foldStatus == oldFoldStatus) {
