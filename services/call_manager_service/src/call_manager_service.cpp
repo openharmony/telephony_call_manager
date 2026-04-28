@@ -2013,7 +2013,7 @@ int32_t CallManagerService::GetCallTransferInfo(const std::string number, CallTr
     auto now = std::chrono::steady_clock::now();
     if (lastGetCallTransferInfoTimes_.find(key) != lastGetCallTransferInfoTimes_.end() &&
         std::chrono::duration_cast<std::chrono::seconds>(now - lastGetCallTransferInfoTimes_[key]).count() <
-            MIN_GET_CALL_TRANSFER_TIME) {
+        MIN_GET_CALL_TRANSFER_TIME) {
         return CALL_ERR_OPERATION_TOO_FREQUENT;
     }
     lastGetCallTransferInfoTimes_[key] = now;
