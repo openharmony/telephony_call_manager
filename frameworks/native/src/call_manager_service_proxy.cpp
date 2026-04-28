@@ -1605,6 +1605,7 @@ int32_t CallManagerServiceProxy::GetCallTransferInfo(std::string number, CallTra
         return TELEPHONY_ERR_WRITE_DESCRIPTOR_TOKEN_FAIL;
     }
     if (number.empty()) {
+        TELEPHONY_LOGE("GetCallTransferInfo number is empty!");
         return TELEPHONY_ERR_ARGUMENT_INVALID;
     }
     dataParcel.WriteString(number);
