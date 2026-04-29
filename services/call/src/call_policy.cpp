@@ -49,7 +49,7 @@ int32_t CallPolicy::DialPolicy(std::u16string &number, AppExecFwk::PacMap &extra
         return ret;
     }
     int32_t accountId = extras.GetIntValue("accountId");
-    ret = SelectAccountIdForCarrier(accountId, extras);
+    ret = SelectAccountIdForCarrier(accountId, dialType, extras);
     if (ret != TELEPHONY_SUCCESS) {
         return ret;
     }
@@ -98,9 +98,8 @@ int32_t CallPolicy::CheckMdmPolicy(const std::string &phoneNum)
     return TELEPHONY_SUCCESS;
 }
 
-int32_t CallPolicy::SelectAccountIdForCarrier(int32_t accountId, AppExecFwk::PacMap &extras)
+int32_t CallPolicy::SelectAccountIdForCarrier(int32_t accountId, DialType dialType, AppExecFwk::PacMap &extras)
 {
-    DialType dialType = (DialType)extras.GetIntValue("dialType");
     if (dialType == DialType::DIAL_CARRIER_TYPE) {
         if (!DelayedSingleton<CallNumberUtils>::GetInstance()->SelectAccountId(accountId, extras)) {
             extras.PutIntValue("accountId", 0);
