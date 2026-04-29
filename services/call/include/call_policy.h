@@ -88,7 +88,7 @@ private:
     std::shared_ptr<EdmCallPolicy> edmCallPolicy_{nullptr};
     int32_t CheckDialType(DialType dialType);
     int32_t CheckMdmPolicy(const std::string &phoneNum);
-    int32_t SelectAccountIdForCarrier(int32_t accountId, AppExecFwk::PacMap &extras);
+    int32_t SelectAccountIdForCarrier(int32_t accountId, DialType dialType, AppExecFwk::PacMap &extras);
     int32_t ValidateCallType(CallType callType);
     int32_t ValidateDialScene(DialScene dialScene);
     int32_t ValidateVideoState(VideoStateType videoState);
