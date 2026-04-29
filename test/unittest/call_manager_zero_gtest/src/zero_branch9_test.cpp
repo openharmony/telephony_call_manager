@@ -694,4 +694,35 @@ HWTEST_F(ZeroBranch9Test, Telephony_PlayRingtone_CallNumberExceed1, Function | M
     EXPECT_TRUE(audioControl->PlayRingtone());
     audioControl->UnInit();
 }
+
+HWTEST_F(ZeroBranch9Test, Telephony_SwitchIncoming_SelectDevice, Function | MediumTest | Level3)
+{
+    auto audioDeviceManager = DelayedSingleton<AudioDeviceManager>::GetInstance();
+    auto callControlManager = DelayedSingleton<CallControlManager>::GetInstance();
+    auto audioSceneProcessor = DelayedSingleton<AudioSceneProcessor>::GetInstance();
+    DialParaInfo dialParaInfo;
+    dialParaInfo.callType = CallType::TYPE_IMS;
+    dialParaInfo.callState = TelCallState::CALL_STATUS_INCOMING;
+    dialParaInfo.videoState = VideoStateType::TYPE_VIDEO;
+    sptr<CallBase> call = new IMSCall(dialParaInfo);
+    CallObjectManager::callObjectPtrList_.emplace_back(call);
+    std::shared_ptr<CallVoiceAssistantManager> voicePtr = CallVoiceAssistantManager::GetInstance();
+    bool tmpIsQueryedBroadcastSwitch = voicePtr->isQueryedBroadcastSwitch;
+    bool tmpIsBroadcastSwitchOn = voicePtr->isBroadcastSwitchOn;
+    voicePtr->isQueryedBroadcastSwitch = true;
+    voicePtr->isBroadcastSwitchOn = true;
+    voicePtr->GetInstance();
+    CallAudioMode callAudioMode;
+    callAudioMode.audioMode = 1;
+    callAudioMode.audioScene = 1;
+    audioDeviceManager->SetCallAudioMode(callAudioMode);
+    audioDeviceManager->isWiredHeadsetConnected_ = false;
+    CallStateToApp tmpVoIPCallState = callControlManager->VoIPCallState_;
+    callControlManager->VoIPCallState_ = CallStateToApp::CALL_STATE_ANSWERED;
+    audioSceneProcessor->SwitchIncoming();
+    EXPECT_EQ(audioDeviceManager->GetCurrentAudioDevice(), AudioDeviceType::DEVICE_SPEAKER);
+    voicePtr->isQueryedBroadcastSwitch = tmpIsQueryedBroadcastSwitch;
+    voicePtr->isBroadcastSwitchOn = tmpIsBroadcastSwitchOn;
+    callControlManager->VoIPCallState_ = tmpVoIPCallState;
+}
 }
