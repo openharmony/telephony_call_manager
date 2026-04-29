@@ -239,10 +239,10 @@ bool AudioSceneProcessor::SwitchIncoming()
         bool isNeedSilent = CallObjectManager::IsNeedSilentInDoNotDisturbMode();
         bool isNotWearWatch = callControlManager->IsNotWearOnWrist();
         if (!isNeedSilent && !isNotWearWatch) {
-            TELEPHONY_LOGI("broadcast switch and doNotDisturbMode close, start play system ring");
-            // play ringtone while incoming state
             audioDeviceManager->SetAudioDeviceByAudioMode(false, true);
             if (!isStartBroadcast) {
+                TELEPHONY_LOGI("broadcast switch and doNotDisturbMode close, start play system ring");
+                // play ringtone while incoming state
                 audioControlManager->StopRingtone();
                 audioControlManager->PlayRingtone();
             }
