@@ -40,10 +40,9 @@ public:
             void OnFoldStatusChanged(Rosen::FoldStatus foldStatus) override;
     };
 
-    Rosen::FoldStatus mOldFoldStatus;
-
 private:
     sptr<Rosen::DisplayManager::IFoldStatusListener> foldStatusListener_;
+    std::atomic<Rosen::FoldStatus> oldFoldStatus_;
 };
 } // namespace Telephony
 } // namespace OHOS

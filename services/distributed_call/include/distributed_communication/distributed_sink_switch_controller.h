@@ -37,7 +37,7 @@ private:
     void SwitchToBtHeadset(const Bluetooth::BluetoothRemoteDevice &device);
 
 private:
-    int32_t preAction_{INVALID_BT_ACTION};
+    std::atomic<int32_t> preAction_{INVALID_BT_ACTION};
 };
 #endif
 

@@ -104,7 +104,8 @@ void DistributedSinkSwitchController::TrySwitchToBtHeadset()
 #ifdef ABILITY_BLUETOOTH_SUPPORT
 void DcCallHfpListener::OnHfpStackChanged(const Bluetooth::BluetoothRemoteDevice &device, int32_t action)
 {
-    TELEPHONY_LOGI("dc call hfp stack changed, action[%{public}d], preAction_[%{public}d]", action, preAction_);
+    TELEPHONY_LOGI("dc call hfp stack changed, action[%{public}d], preAction_[%{public}d]",
+        action, preAction_.load());
     int32_t cod = DEFAULT_HFP_FLAG_VALUE;
     int32_t majorClass = DEFAULT_HFP_FLAG_VALUE;
     int32_t majorMinorClass = DEFAULT_HFP_FLAG_VALUE;
@@ -118,21 +119,21 @@ void DcCallHfpListener::OnHfpStackChanged(const Bluetooth::BluetoothRemoteDevice
     if (!DelayedSingleton<DistributedCommunicationManager>::GetInstance()->IsConnected() ||
         !DelayedSingleton<DistributedCommunicationManager>::GetInstance()->IsAudioOnSink()) {
         TELEPHONY_LOGI("dc not connected or audio not on sink");
-        preAction_ = action;
+        preAction_.store(action);
         return;
     }
-    if ((action == WEAR_ACTION) || (action == DISABLE_FROM_REMOTE_ACTION && preAction_ == WEAR_ACTION)) {
+    if ((action == WEAR_ACTION) || (action == DISABLE_FROM_REMOTE_ACTION && preAction_.load() == WEAR_ACTION)) {
         // Forcibly switch to the bt headset in either of the following situations:
         // case 1: At the moment, the user wears the headset
         // case 2: The headset is preempted by the peer device when the user wears the headset
         SwitchToBtHeadset(device);
     }
-    preAction_ = action;
+    preAction_.store(action);
 }
 
 void DcCallHfpListener::SetPreAction(int32_t action)
 {
-    preAction_ = action;
+    preAction_.store(action);
 }
 
 void DcCallHfpListener::SwitchToBtHeadset(const Bluetooth::BluetoothRemoteDevice &device)
