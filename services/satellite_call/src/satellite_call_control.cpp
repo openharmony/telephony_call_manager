@@ -16,6 +16,7 @@
 
 #include <satellite_call_control.h>
 
+#include "parse_satellite_int.h"
 #include "call_control_manager.h"
 #include "call_dialog.h"
 #include "call_manager_utils.h"
@@ -70,13 +71,20 @@ int32_t SatelliteCallControl::IsAllowedSatelliteDialCall()
     std::string is_satellite_connected{"0"};
     int32_t err = datashareHelper->Query(satelliteModeUri, SettingsDataShareHelper::QUERY_SATELLITE_CONNECTED_KEY,
         is_satellite_connected);
-    int32_t satelliteConnected = std::atoi(is_satellite_connected.c_str());
+    int32_t satelliteConnected = 0;
+    if (!ParseSatelliteInt32(is_satellite_connected, satelliteConnected)) {
+        TELEPHONY_LOGE("invalid satellite connected setting: %{public}s", is_satellite_connected.c_str());
+    }
     if (err == TELEPHONY_SUCCESS && satelliteConnected == SATELLITE_CONNECTED) {
         TELEPHONY_LOGI("satellite service is connected");
         std::string tempLevel = CallManagerUtils::GetSystemParameter("persist.thermal.log.satcomm", "-1");
         if (tempLevel != "-1") {
-            int32_t temp = std::atoi(tempLevel.c_str());
-            SetSatcommTempLevel(temp);
+            int32_t temp = 0;
+            if (!ParseSatelliteInt32(tempLevel, temp)) {
+                TELEPHONY_LOGE("invalid persist.thermal.log.satcomm: %{public}s", tempLevel.c_str());
+            } else {
+                SetSatcommTempLevel(temp);
+            }
         }
         TELEPHONY_LOGI("GetSatcommTempLevel = %{public}s", tempLevel.c_str());
         if (GetSatcommTempLevel() >= SatCommTempLevel::TEMP_LEVEL_MIDDLE) {
@@ -98,7 +106,10 @@ int32_t SatelliteCallControl::IsSatelliteSwitchEnable()
     std::string is_satellite_mode_on{ "0" };
     int32_t err = datashareHelper->Query(satelliteModeUri, SettingsDataShareHelper::QUERY_SATELLITE_MODE_KEY,
         is_satellite_mode_on);
-    int32_t satelliteMode = std::atoi(is_satellite_mode_on.c_str());
+    int32_t satelliteMode = 0;
+    if (!ParseSatelliteInt32(is_satellite_mode_on, satelliteMode)) {
+        TELEPHONY_LOGE("invalid satellite mode setting: %{public}s", is_satellite_mode_on.c_str());
+    }
     if (err == TELEPHONY_SUCCESS && satelliteMode == SATELLITE_MODE_ON) {
         TELEPHONY_LOGI("satellite mode on");
         return TELEPHONY_SUCCESS;
@@ -115,7 +126,11 @@ void SatelliteCallControl::SetUsedModem()
 {
     char satelliteSupportType[SYSPARA_SIZE] = { 0 };
     GetParameter(TEL_SATELLITE_SUPPORT_TYPE, SATELLITE_TYPE_DEFAULT_VALUE, satelliteSupportType, SYSPARA_SIZE);
-    int satelliteMode = static_cast<unsigned int>(std::atoi(satelliteSupportType));
+    int32_t parsedSupportType = 0;
+    if (!ParseSatelliteInt32(satelliteSupportType, parsedSupportType)) {
+        TELEPHONY_LOGE("invalid const.telephony.satellite.support_type: %{public}s", satelliteSupportType);
+    }
+    int satelliteMode = static_cast<unsigned int>(parsedSupportType);
     TELEPHONY_LOGI("satellite satelliteMode = %{public}d.", satelliteMode);
     if ((satelliteMode & 0b00000100) || (satelliteMode & 0b00010000)) {
         std::vector<std::pair<std::string, std::string>> vec = {
